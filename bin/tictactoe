@@ -8,3 +8,10 @@ sys.path.append(cwd + "/config")
 from environment import *
 
 Cli()
+
+board = Board()
+board.display()
+board.position("3")
+board.position("a")
+# breakpoint()
+
