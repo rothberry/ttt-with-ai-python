@@ -11,7 +11,10 @@ Cli()
 
 board = Board()
 board.display()
-board.position("3")
-board.position("a")
-# breakpoint()
+print(str(board.position("3")))
+print(str(board.position("a")))
+print(str(board.is_open(0)))
+print(str(board.is_open(1)))
+board.turn()
 
+breakpoint()
