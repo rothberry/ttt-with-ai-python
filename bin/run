@@ -8,7 +8,7 @@ sys.path.append(cwd + "/config")
 from environment import *
 
 Cli()
-
+os.system('cls||clear')
 board = Board()
 board.display()
 # print(str(board.position("3")))
@@ -16,5 +16,5 @@ board.display()
 # print(str(board.is_open(0)))
 # print(str(board.is_open(1)))
 # board.turn()
-board.is_winner("X")
+print(board.is_winner("X"))
 breakpoint()
