@@ -3,14 +3,15 @@
 
 init_board = ["💯", "💯", "💯", "💯", "💯", "💯", "💯", "💯", "💯"]
 test_board = ["💯", "X", "💯", "💯", "💯", "💯", "💯", "O", "💯"]
+test_board_x = ["X", "X", "X", "O", "💯", "💯", "O", "O", "💯"]
 
-
+WINNING_COMBO = [[0,1,2],[3,4,5],[6,7,8],[0,3,6], [1,4,7],[2,5,8],[0,4,8],[2,4,6]]
 class Board:
     def __init__(self):
-        self.board = test_board
-        self.counter = 2
+        self.board = test_board_x
+        self.counter = 6
         # self.play_dict = {"X": [[0,1]], "O": [[2,1]]}
-        self.play_dict = {"X": [2], "O": [8]}
+        self.play_dict = {"X": [1,2,0], "O": [7,4,6]}
 
     def display(self):
         print(f"===TURN={self.counter}===")
@@ -62,7 +63,6 @@ class Board:
         # check if that position is taken
         # use counter for current player
         # place marker
-
         user_in = input("Pick a Spot\n")
         user_pos = self.position(user_in)
         print(user_pos)
@@ -72,6 +72,22 @@ class Board:
             print("TAKEN")
         self.display()
         self.turn()
+
+    def is_game_over(self):
+        # check if x or o has winning combo
+        
+        # check if board is full
+        if self.counter > 8:
+            return True
+
+    def is_winner(self, player):
+        # if player_dict[player].has_winning combo
+        # return True, else return False
+        if len(self.play_dict[player]) < 3:
+            return False``
+
+        for combo in WINNING_COMBO:
+            breakpoint()
 
 
     # For board matrix
