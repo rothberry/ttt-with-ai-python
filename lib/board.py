@@ -1,19 +1,22 @@
 # init_board_mat = [["💯", "💯", "💯"],["💯", "💯", "💯"],["💯", "💯", "💯"]]
 # test_board_mat = [["💯", "X", "💯"],["💯", "💯", "💯"],["💯", "O", "💯"]]
+import os
 
 init_board = ["💯", "💯", "💯", "💯", "💯", "💯", "💯", "💯", "💯"]
 test_board = ["💯", "X", "💯", "💯", "💯", "💯", "💯", "O", "💯"]
-
+             
 
 class Board:
     def __init__(self):
-        self.board = test_board
-        self.counter = 2
+        self.board = init_board
+        self.counter = 0
         # self.play_dict = {"X": [[0,1]], "O": [[2,1]]}
-        self.play_dict = {"X": [2], "O": [8]}
+        self.play_dict = {"X": [], "O": []}
 
     def display(self):
-        print(f"===TURN={self.counter}===")
+        
+        os.system('clear')
+        print(f"===TURN=`{self.current_player()}`===")
         i = 0
         while i < len(self.board):
             print(f"{self.board[i]} | {self.board[i+1]} | {self.board[i+2]}")
@@ -21,6 +24,7 @@ class Board:
             if i < 7:
                 print("------------")
         print("============")
+
 
     def reset_board(self):
         self.board = init_board
@@ -42,9 +46,9 @@ class Board:
 
     def current_player(self):
         if self.counter % 2 == 0:
-            return "O"
-        else:
             return "X"
+        else:
+            return "0"
 
     def is_open(self, location):
         return self.board[location] == "💯"
