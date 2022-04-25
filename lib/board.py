@@ -1,3 +1,4 @@
+# TODO: WRITE AN EXIT
 # init_board_mat = [["💯", "💯", "💯"],["💯", "💯", "💯"],["💯", "💯", "💯"]]
 # test_board_mat = [["💯", "X", "💯"],["💯", "💯", "💯"],["💯", "O", "💯"]]
 import os
@@ -10,12 +11,12 @@ WINNING_COMBO = [[0,1,2],[3,4,5],[6,7,8],[0,3,6], [1,4,7],[2,5,8],[0,4,8],[2,4,6
 class Board:
     def __init__(self):
         # TODO creat board from dict
-        self.board = test_board_x
-        self.counter = 2
+        self.board = init_board
+        self.counter = 0
         # TODO make init counter & play_dict dynamic
         # self.play_dict = {"X": [[0,1]], "O": [[2,1]]}
         # self.play_dict = {"X": [1], "O": [7]}
-        self.play_dict = {"X": [1,2,0], "O": [7,4,6]}
+        self.play_dict = {"X": [], "O": []}
 
     def display(self):
         
@@ -52,7 +53,7 @@ class Board:
         if self.counter % 2 == 0:
             return "X"
         else:
-            return "0"
+            return "O"
 
     def is_open(self, location):
         return self.board[location] == "💯"
@@ -61,7 +62,7 @@ class Board:
         # update board and dict
         self.board[location] = player
         self.play_dict[player].append(location)
-        self.counter += 1
+      
 
     def turn(self):
         # check if board is full
@@ -70,19 +71,27 @@ class Board:
         # check if that position is taken
         # use counter for current player
         # place marker
+        
         user_in = input("Pick a Spot\n")
         user_pos = self.position(user_in)
+
         print(user_pos)
         if self.is_open(user_pos):
             self.place_marker(self.current_player(), user_pos)
+                 
         else:
             print("TAKEN")
         self.display()
+        if(self.is_game_over()):
+            return
+        self.counter += 1
         self.turn()
+        
 
     def is_game_over(self):
         # check if x or o has winning combo
         # check if board is full
+        print(f"{self.play_dict}")
         if self.is_winner(self.current_player()):
             print("WINNER IS " + self.current_player())
             return True
@@ -98,6 +107,7 @@ class Board:
             return False
 
         has_won = True
+      
         for combo in WINNING_COMBO:
             # for c in combo:
             # loop over combo,
