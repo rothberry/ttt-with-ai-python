@@ -4,14 +4,18 @@ import os
 
 init_board = ["💯", "💯", "💯", "💯", "💯", "💯", "💯", "💯", "💯"]
 test_board = ["💯", "X", "💯", "💯", "💯", "💯", "💯", "O", "💯"]
-             
+test_board_x = ["X", "X", "X", "O", "💯", "💯", "O", "O", "💯"]
 
+WINNING_COMBO = [[0,1,2],[3,4,5],[6,7,8],[0,3,6], [1,4,7],[2,5,8],[0,4,8],[2,4,6]]
 class Board:
     def __init__(self):
-        self.board = init_board
-        self.counter = 0
+        # TODO creat board from dict
+        self.board = test_board_x
+        self.counter = 2
+        # TODO make init counter & play_dict dynamic
         # self.play_dict = {"X": [[0,1]], "O": [[2,1]]}
-        self.play_dict = {"X": [], "O": []}
+        # self.play_dict = {"X": [1], "O": [7]}
+        self.play_dict = {"X": [1,2,0], "O": [7,4,6]}
 
     def display(self):
         
@@ -37,7 +41,7 @@ class Board:
         # 1-9 or coords
         try:
             val = int(user_input) - 1
-            if val in range(0,8):
+            if val in range(0,9):
               return val
             else:
               return False
@@ -66,7 +70,6 @@ class Board:
         # check if that position is taken
         # use counter for current player
         # place marker
-
         user_in = input("Pick a Spot\n")
         user_pos = self.position(user_in)
         print(user_pos)
@@ -77,6 +80,39 @@ class Board:
         self.display()
         self.turn()
 
+    def is_game_over(self):
+        # check if x or o has winning combo
+        # check if board is full
+        if self.is_winner(self.current_player()):
+            print("WINNER IS " + self.current_player())
+            return True
+        elif self.is_draw():
+            print("GAME DRAW")
+            return True
+        return False
+
+    def is_winner(self, player):
+        # if player_dict[player].has_winning combo
+        # return True, else return False
+        if len(self.play_dict[player]) < 3:
+            return False
+
+        has_won = True
+        for combo in WINNING_COMBO:
+            # for c in combo:
+            # loop over combo,
+            # for each iteration, does self.player_dict[player] include c
+            for c in combo:
+                if not c in self.play_dict[player]:
+                    has_won = False
+                    break
+                # has_won = True
+            if has_won:
+                break
+        return has_won
+
+    def is_draw(self):
+        return self.counter > 8
 
     # For board matrix
     @staticmethod
