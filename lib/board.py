@@ -11,7 +11,7 @@ WINNING_COMBO = [[0,1,2],[3,4,5],[6,7,8],[0,3,6], [1,4,7],[2,5,8],[0,4,8],[2,4,6
 class Board:
     def __init__(self):
         # TODO creat board from dict
-        self.board = init_board
+        self.board = init_board.copy()
         self.counter = 0
         # TODO make init counter & play_dict dynamic
         # self.play_dict = {"X": [[0,1]], "O": [[2,1]]}
@@ -32,7 +32,7 @@ class Board:
 
 
     def reset_board(self):
-        self.board = init_board
+        self.board = init_board.copy()
         self.counter = 0
 
     @staticmethod
@@ -63,6 +63,16 @@ class Board:
         self.board[location] = player
         self.play_dict[player].append(location)
       
+    def handle_input(self, user_input): 
+        ui = user_input.lower()
+        if(ui == "reset"):
+            self.reset_board()
+            self.display()
+            self.turn()
+            return True
+        if(ui == "exit"):
+            return True
+
 
     def turn(self):
         # check if board is full
@@ -73,12 +83,13 @@ class Board:
         # place marker
         
         user_in = input("Pick a Spot\n")
+        if(self.handle_input(user_in)):
+            return
         user_pos = self.position(user_in)
 
         print(user_pos)
         if self.is_open(user_pos):
             self.place_marker(self.current_player(), user_pos)
-                 
         else:
             print("TAKEN")
         self.display()
