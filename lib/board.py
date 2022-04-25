@@ -1,5 +1,7 @@
+# TODO: WRITE AN EXIT
 # init_board_mat = [["💯", "💯", "💯"],["💯", "💯", "💯"],["💯", "💯", "💯"]]
 # test_board_mat = [["💯", "X", "💯"],["💯", "💯", "💯"],["💯", "O", "💯"]]
+import os
 
 init_board = ["💯", "💯", "💯", "💯", "💯", "💯", "💯", "💯", "💯"]
 test_board = ["💯", "X", "💯", "💯", "💯", "💯", "💯", "O", "💯"]
@@ -9,15 +11,17 @@ WINNING_COMBO = [[0,1,2],[3,4,5],[6,7,8],[0,3,6], [1,4,7],[2,5,8],[0,4,8],[2,4,6
 class Board:
     def __init__(self):
         # TODO creat board from dict
-        self.board = test_board_x
-        self.counter = 2
+        self.board = init_board.copy()
+        self.counter = 0
         # TODO make init counter & play_dict dynamic
         # self.play_dict = {"X": [[0,1]], "O": [[2,1]]}
         # self.play_dict = {"X": [1], "O": [7]}
-        self.play_dict = {"X": [1,2,0], "O": [7,4,6]}
+        self.play_dict = {"X": [], "O": []}
 
     def display(self):
-        print(f"===TURN={self.counter}===")
+        
+        os.system('clear')
+        print(f"===TURN=`{self.current_player()}`===")
         i = 0
         while i < len(self.board):
             print(f"{self.board[i]} | {self.board[i+1]} | {self.board[i+2]}")
@@ -26,8 +30,9 @@ class Board:
                 print("------------")
         print("============")
 
+
     def reset_board(self):
-        self.board = init_board
+        self.board = init_board.copy()
         self.counter = 0
 
     @staticmethod
@@ -46,9 +51,9 @@ class Board:
 
     def current_player(self):
         if self.counter % 2 == 0:
-            return "O"
-        else:
             return "X"
+        else:
+            return "O"
 
     def is_open(self, location):
         return self.board[location] == "💯"
@@ -57,7 +62,17 @@ class Board:
         # update board and dict
         self.board[location] = player
         self.play_dict[player].append(location)
-        self.counter += 1
+      
+    def handle_input(self, user_input): 
+        ui = user_input.lower()
+        if(ui == "reset"):
+            self.reset_board()
+            self.display()
+            self.turn()
+            return True
+        if(ui == "exit"):
+            return True
+
 
     def turn(self):
         # check if board is full
@@ -66,19 +81,28 @@ class Board:
         # check if that position is taken
         # use counter for current player
         # place marker
+        
         user_in = input("Pick a Spot\n")
+        if(self.handle_input(user_in)):
+            return
         user_pos = self.position(user_in)
+
         print(user_pos)
         if self.is_open(user_pos):
             self.place_marker(self.current_player(), user_pos)
         else:
             print("TAKEN")
         self.display()
+        if(self.is_game_over()):
+            return
+        self.counter += 1
         self.turn()
+        
 
     def is_game_over(self):
         # check if x or o has winning combo
         # check if board is full
+        print(f"{self.play_dict}")
         if self.is_winner(self.current_player()):
             print("WINNER IS " + self.current_player())
             return True
@@ -94,6 +118,7 @@ class Board:
             return False
 
         has_won = True
+      
         for combo in WINNING_COMBO:
             # for c in combo:
             # loop over combo,
